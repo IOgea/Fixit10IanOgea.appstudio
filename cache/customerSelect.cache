@@ -15,10 +15,11 @@ customerSelect.onshow=function(){
   txtStates_contents.style.height = "200px"
   query = "SELECT name FROM customer2;"
   req = Ajax("https://ormond.creighton.edu/courses/375/ajax-connection.php", "POST", "host=ormond.creighton.edu&user=iro88883&pass=" + pw + "&database=iro88883&query=" + query)
-   if (req.status == 200){
-   console.log(req.responseText)
+  if (req.status == 200){
    results = JSON.parse(req.responseText)
-    for (i = 0; i <= results.length - 1; i++){
+   console.log(results)
+   console.log(typeof(results))
+   for (i = 0; i <= results.length - 1; i++){
             drpCustomers.addItem(results[i])
               }
         }
