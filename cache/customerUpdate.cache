@@ -1,26 +1,17 @@
 /*
-Used a modified copy of the Select form from above. How to do this: 
-> Export the customerSelect form (under File > Export Form), and import it back into the same project (under Project > Import Existing Form). The form will have a .frm file extension.
-> Rename the new form customerDelete
-> Rename any controls to be what you want.
-> Remember, you cannot use the first line of event listeners that were on an imported form because appStudio only registers a new event handler when it is initially created by right-clicking on the control. So the imported one, having been already created, is not registered with the new form and has to be re-created so it will be registered.
-    - copy the code in the event  handler you want to redo
-     - delete the entire event handler code.  
-     - create a new event listener by right-clicking on the control and picking an event. 
-     - paste the code you copied into the new event handler
-     - change the names of local variables and controls inside the event handler to match any names that you changed. 
-Used a textArea  or Dropdown that shows all the customer names, one per line.
-User can pick a customer from the list.  
-Used a sql Delete  query to delete the customer chosen by the user from the display control. 
-Used an AJAX call to the database to delete the matching customer. 
-Checked if customer name exists in database before deleting it.
-Used a textArea to show the user the remaining customer names, using a template literal. 
-
+Created a new form named customerUpdate. 
+Used a Dropdown to display the customer names
+Used dropdown choice to customer whose name user wants to change. 
+Used an input control, have the user enter the new customer name.
+When user clicks a button, the program processes the new customer name from the user.
+The new name replaces the old name in the customer record.
+The change is reflected in the display and the database.
+Used a textArea to display the remaining customers.
 */
 
-customerDelete.onshow=function(){
-    drpCustomerDelete.clear()
-    txtStates_contents.style.height = "200px"
+customerUpdate.onshow=function(){
+  drpCustomerUpdate.clear()
+  txtUpdatedCustomers_contents.style.height = "200px"
   query = "SELECT name FROM customer2;"
   req = Ajax("https://ormond.creighton.edu/courses/375/ajax-connection.php", "POST", "host=ormond.creighton.edu&user=iro88883&pass=" + pw + "&database=iro88883&query=" + query)
   if (req.status == 200){
@@ -28,44 +19,33 @@ customerDelete.onshow=function(){
    console.log(results)
    console.log(typeof(results))
    for (i = 0; i <= results.length - 1; i++){
-            drpCustomerDelete.addItem(results[i])
-    }
+            drpCustomerUpdate.addItem(results[i])
+                }
   }
 }
 
-
-
-drpCustomerDelete.onclick=function(s){
+drpCustomerUpdate.onclick=function(s){  
       if (typeof(s) == "object"){  // means the control was clicked but no selection made yet
     return                     // do nothing
   } else {
-    drpCustomerDelete.value = s
-    let found = false
-    for (i = 0; i <= drpCustomerDelete.length - 1; i++) {
-      console.log(results[i])
-        if (drpCustomerDelete.value == results[i]){
-            found = true
-            break
+    drpCustomerUpdate.value = s
             }
-            }
-     if (found == true){    
-    query = "Delete  From customer2 Where name ="+'"' + drpCustomerDelete.value + '"'
+}
+
+btnUpdate.onclick=function(){
+    query = "UPDATE customer2 SET name =" + '"' + inptUpdate.value + '"' + " WHERE name = " + '"' + drpCustomerUpdate.value + '"'
     req = Ajax("https://ormond.creighton.edu/courses/375/ajax-connection.php", "POST", "host=ormond.creighton.edu&user=iro88883&pass=" + pw + "&database=iro88883&query=" + query)
     console.log(req.status)
+    console.log(req.responseText)
     if (req.status ==200){
       if (req.responseText == 500){
-    lblHeader1.value = `You have successfully deleted ${s}, the remaining customers are:`
+    lblUpdateMessage.value = `You have have changed the name of ${drpCustomerUpdate.value} to ${inptUpdate.value}`
     query = "SELECT name FROM customer2;"
     req = Ajax("https://ormond.creighton.edu/courses/375/ajax-connection.php", "POST", "host=ormond.creighton.edu&user=iro88883&pass=" + pw + "&database=iro88883&query=" + query)
     results = JSON.parse(req.responseText)
               for (i = 0; i <= results.length - 1; i++)
                   message = message + results[i] + "\n"
-              txtRemainingCustomers.value = message
-              }
-              }
-            else{
-              lblHeader1.value = `${s} is not in the database`
-          }
-          }
-    }
+              txtUpdatedCustomers.value = message
+         }
+      }
 }

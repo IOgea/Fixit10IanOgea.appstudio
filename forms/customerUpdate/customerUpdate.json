@@ -16,7 +16,7 @@
         "forms",
         "customerUpdate",
         "Elements",
-        "txtRemainingCustomers1.json"
+        "txtUpdatedCustomers.json"
       ]
     },
     {
@@ -25,7 +25,7 @@
         "forms",
         "customerUpdate",
         "Elements",
-        "drpCustomerDelete1.json"
+        "drpCustomerUpdate.json"
       ]
     },
     {
@@ -34,7 +34,25 @@
         "forms",
         "customerUpdate",
         "Elements",
-        "lblHeader11.json"
+        "lblUpdateMessage.json"
+      ]
+    },
+    {
+      "!type": "External",
+      "file": [
+        "forms",
+        "customerUpdate",
+        "Elements",
+        "inptUpdate.json"
+      ]
+    },
+    {
+      "!type": "External",
+      "file": [
+        "forms",
+        "customerUpdate",
+        "Elements",
+        "btnUpdate.json"
       ]
     }
   ],
@@ -53,7 +71,7 @@
   "onhide": "",
   "onkeypress": "",
   "onresize": "",
-  "onshow": "customerDelete.onshow()",
+  "onshow": "customerUpdate.onshow()",
   "openMode": "none",
   "parentForm": "",
   "position": "absolute",
